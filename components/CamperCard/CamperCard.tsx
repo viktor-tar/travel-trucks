@@ -119,13 +119,6 @@ export default function CamperCard({ camper }: CamperCardProps) {
           <h2 className={styles.title}>{camper.name}</h2>
           <div className={styles.priceWrapper}>
             <span className={styles.price}>{formattedPrice}</span>
-            <button
-              type="button"
-              className={styles.heartBtn}
-              aria-label="Add to favorites"
-            >
-              <Icon id="heart" width={24} height={24} />
-            </button>
           </div>
         </div>
 
