@@ -24,9 +24,9 @@ const FORM_LABELS: Record<string, string> = {
 
 const AMENITIES_MAP: Record<string, { label: string; iconId: string }> = {
   kitchen: { label: "Kitchen", iconId: "kitchen" },
-  AC: { label: "AC", iconId: "AC" },
+  ac: { label: "AC", iconId: "AC" },
   bathroom: { label: "Bathroom", iconId: "bathroom" },
-  TV: { label: "TV", iconId: "TV" },
+  tv: { label: "TV", iconId: "TV" },
   radio: { label: "Radio", iconId: "radio" },
   refrigerator: { label: "Refrigerator", iconId: "refrigerator" },
   microwave: { label: "Microwave", iconId: "microwave" },
