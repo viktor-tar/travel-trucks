@@ -1,0 +1,132 @@
+.section {
+  padding-top: var(--spacing-40, 40px);
+  padding-bottom: 80px;
+}
+
+/* Верхній блок сітки (Галерея та Інфо про авто) */
+.topGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+  margin-bottom: 80px; /* Відступ до секції відгуків */
+}
+
+/* Нижній блок сітки (Відгуки та Форма) */
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.leftColumn,
+.rightColumn,
+.reviewsColumn,
+.formColumn {
+  min-width: 0; /* Захист від розриву сітки Flex/Grid довгим контентом */
+}
+
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-32, 32px);
+}
+
+.infoCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: var(--font-size-24, 24px);
+  font-weight: var(--font-weight-600, 600);
+  color: var(--color-main, #101828);
+  margin-bottom: var(--spacing-8, 8px);
+}
+
+.meta {
+  display: flex;
+  gap: var(--spacing-16, 16px);
+  margin-bottom: var(--spacing-16, 16px);
+  font-size: var(--font-size-16, 16px);
+}
+
+.rating,
+.location {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4, 4px);
+}
+
+.price {
+  font-size: var(--font-size-24, 24px);
+  font-weight: var(--font-weight-600, 600);
+  color: var(--color-main, #101828);
+  margin-bottom: var(--spacing-24, 24px);
+}
+
+.description {
+  font-size: var(--font-size-16, 16px);
+  color: var(--color-secondary, #475467);
+  line-height: var(--line-height-24, 24px);
+}
+
+.specsCard {
+  background-color: var(--color-bg-light, #f7f7f7);
+  border-radius: var(--radius-20, 20px);
+  padding: 40px;
+}
+
+.specsTitle {
+  font-size: var(--font-size-20, 20px);
+  font-weight: var(--font-weight-600, 600);
+  color: var(--color-main, #101828);
+  margin-bottom: var(--spacing-24, 24px);
+  border-bottom: 1px solid var(--color-border, #dadde1);
+  padding-bottom: var(--spacing-24, 24px);
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-8, 8px);
+  list-style: none;
+  margin-bottom: var(--spacing-24, 24px);
+}
+
+.badge {
+  padding: 12px 18px;
+  background-color: var(--color-bg-white, #ffffff);
+  border-radius: 100px;
+  font-size: var(--font-size-16, 16px);
+  font-weight: var(--font-weight-500, 500);
+  text-transform: capitalize;
+}
+
+.specsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16, 16px);
+}
+
+.specItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-16, 16px);
+  font-weight: var(--font-weight-500, 500);
+  color: var(--color-main, #101828);
+}
+
+/* Адаптивність для планшетів та мобільних */
+@media screen and (max-width: 1024px) {
+  .topGrid,
+  .bottomGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .topGrid {
+    margin-bottom: 40px;
+  }
+}

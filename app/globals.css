@@ -1,49 +1,101 @@
+@import "modern-normalize/modern-normalize.css";
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --container-max-width: 1440px;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+  /* UI Kit Palette */
+  --color-sage-dark: #6d7b75;
+  --color-sage-light: #829b91;
+  --color-badge: #f2f4f7;
+  --color-bg-light: #f7f7f7;
+  --color-rating: #ffc531;
+  --color-muted: #6c717b;
+  --color-bg-white: #ffffff;
+  --color-slate: #475467;
+  --color-dark-blue: #10162b;
+  --color-border-light: #dadde1;
 
-html {
-  height: 100%;
-}
+  /* Semantic Variables mapped to UI Kit */
+  --color-main: var(--color-dark-blue);
+  --color-secondary: var(--color-slate);
+  --color-gray: var(--color-muted);
+  --color-border: var(--color-border-light);
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
+  /* Buttons */
+  --color-button: var(--color-sage-dark);
+  --color-button-hover: var(--color-sage-light);
 
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Validation / Errors */
+  --color-error: #d84343;
+  --color-error-bg: #fff5f5;
+
+  /* Typography */
+  --font-inter: "Inter", sans-serif;
+  --font-manrope: "Manrope", sans-serif;
+
+  --font-size-12: 12px;
+  --font-size-14: 14px;
+  --font-size-16: 16px;
+  --font-size-18: 18px;
+  --font-size-20: 20px;
+  --font-size-24: 24px;
+  --font-size-48: 48px;
+
+  --font-weight-400: 400;
+  --font-weight-500: 500;
+  --font-weight-600: 600;
+
+  --line-height-16: 16px;
+  --line-height-20: 20px;
+  --line-height-24: 24px;
+  --line-height-32: 32px;
+
+  /* Spacing & Radii */
+  --radius-8: 8px;
+  --radius-10: 10px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-20: 20px;
+  --radius-200: 200px;
+
+  /* Figma Spacing Variables */
+  --spacing-4: 4px;
+  --spacing-6: 6px;
+  --spacing-8: 8px;
+  --spacing-10: 10px;
+  --spacing-12: 12px;
+  --spacing-14: 14px;
+  --spacing-16: 16px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-52: 52px;
+  --spacing-65: 65px;
+  --spacing-80: 80px;
 }
 
 * {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-inter);
+  color: var(--color-main);
+  background-color: var(--color-bg-white);
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
-  color: inherit;
   text-decoration: none;
+  color: inherit;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
 }

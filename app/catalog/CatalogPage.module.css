@@ -1,0 +1,10 @@
+.catalogSection {
+  padding-top: var(--spacing-40);
+  padding-bottom: 80px;
+}
+
+.catalogContainer {
+  display: flex;
+  gap: 64px;
+  align-items: flex-start;
+}
