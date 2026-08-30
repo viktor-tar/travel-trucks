@@ -1,0 +1,56 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+}
+
+.heading {
+  font-size: var(--font-size-20);
+  font-weight: var(--font-weight-600);
+  color: var(--color-main);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+}
+
+.reviewCard {
+  background-color: var(--color-bg-light);
+  border-radius: var(--radius-20);
+  padding: var(--spacing-24);
+}
+
+.userHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-16);
+  margin-bottom: var(--spacing-16);
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--color-badge);
+  color: var(--color-button);
+  font-size: var(--font-size-24);
+  font-weight: var(--font-weight-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userName {
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weight-600);
+  color: var(--color-main);
+  margin-bottom: 4px;
+}
+
+.comment {
+  font-size: var(--font-size-16);
+  color: var(--color-secondary);
+  line-height: var(--line-height-24);
+}

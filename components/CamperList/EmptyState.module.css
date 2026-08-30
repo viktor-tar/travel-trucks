@@ -1,0 +1,73 @@
+/* components/CamperList/EmptyState.module.css */
+.emptyContainer {
+  flex-grow: 1;
+  background-color: var(--color-bg-light);
+  border-radius: var(--radius-20);
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 500px;
+}
+
+.illustrationWrapper {
+  width: 240px;
+  height: 140px;
+  margin-bottom: var(--spacing-24);
+}
+
+.illustration {
+  width: 100%;
+  height: 100%;
+}
+
+.title {
+  font-size: var(--font-size-24);
+  font-weight: var(--font-weight-600);
+  color: var(--color-main);
+  margin-bottom: var(--spacing-12);
+}
+
+.text {
+  font-size: var(--font-size-14);
+  color: var(--color-slate);
+  line-height: var(--line-height-20);
+  margin-bottom: var(--spacing-32);
+  max-width: 420px;
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-16);
+}
+
+.clearBtn {
+  height: 48px;
+  padding: 0 24px;
+  background-color: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-200);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-500);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-6);
+  color: var(--color-main);
+}
+
+.viewAllBtn {
+  height: 48px;
+  padding: 0 24px;
+  background-color: var(--color-button);
+  color: var(--color-bg-white);
+  border-radius: var(--radius-200);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-500);
+  transition: background-color 0.2s ease;
+}
+
+.viewAllBtn:hover {
+  background-color: var(--color-button-hover);
+}

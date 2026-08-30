@@ -1,0 +1,94 @@
+.formCard {
+  padding: 40px;
+  background-color: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-20);
+  height: fit-content;
+}
+
+.formTitle {
+  font-size: var(--font-size-20);
+  font-weight: var(--font-weight-600);
+  color: var(--color-main);
+  margin-bottom: var(--spacing-8);
+}
+
+.formSubtitle {
+  font-size: var(--font-size-14);
+  color: var(--color-slate);
+  margin-bottom: var(--spacing-24);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-14);
+}
+
+.inputField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inputWrapper {
+  position: relative;
+  background-color: var(--color-bg-light);
+  border: 1px solid transparent;
+  border-radius: var(--radius-12);
+  padding: 14px 18px;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: var(--font-size-16);
+  color: var(--color-main);
+}
+
+.input::placeholder {
+  color: var(--color-secondary);
+}
+
+/* Стан помилки (Details_error.jpg) */
+.inputError {
+  background-color: var(--color-error-bg);
+  border-color: var(--color-error);
+}
+
+.errorIcon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-error);
+  font-weight: var(--font-weight-600);
+  font-size: 16px;
+}
+
+.errorMessage {
+  font-size: var(--font-size-12);
+  color: var(--color-error);
+  padding-left: 4px;
+}
+
+.submitBtn {
+  width: 100%;
+  height: 56px;
+  background-color: var(--color-button);
+  color: var(--color-bg-white);
+  border-radius: var(--radius-200);
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-500);
+  margin-top: var(--spacing-10);
+  transition: background-color 0.2s ease;
+}
+
+.submitBtn:hover {
+  background-color: var(--color-button-hover);
+}
