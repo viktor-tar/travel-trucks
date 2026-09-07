@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchCampers } from "@/lib/api/clientApi";
 import CamperList from "@/components/CamperList/CamperList";
@@ -14,6 +15,12 @@ const PER_PAGE = 4;
 
 export default function CatalogPage() {
   const { filters, resetFilters } = useFilterStore();
+  const [resetKey, setResetKey] = useState(0);
+
+  const handleEmptyStateReset = () => {
+    resetFilters();
+    setResetKey((prev) => prev + 1);
+  };
 
   const {
     data,
@@ -51,7 +58,7 @@ export default function CatalogPage() {
     <main className={styles.catalogSection}>
       <Container>
         <div className={styles.catalogContainer}>
-          <CamperFilters />
+          <CamperFilters key={resetKey} />
 
           <section style={{ flexGrow: 1 }}>
             {isLoading ? (
@@ -60,8 +67,8 @@ export default function CatalogPage() {
               </div>
             ) : campers.length === 0 ? (
               <EmptyState
-                onClearFilters={resetFilters}
-                onViewAll={resetFilters}
+                onClearFilters={handleEmptyStateReset}
+                onViewAll={handleEmptyStateReset}
               />
             ) : (
               <CamperList
