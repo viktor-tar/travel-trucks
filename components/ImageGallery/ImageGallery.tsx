@@ -1,90 +1,60 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
-import { Swiper as SwiperClass } from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode, Navigation, Thumbs } from "swiper/modules";
-
-// Обов'язкові стилі Swiper
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
-import "swiper/css/thumbs";
-
+import { useState } from "react";
+import type { GalleryItem } from "@/types/camper";
 import styles from "./ImageGallery.module.css";
 
 interface ImageGalleryProps {
-  gallery: { thumb: string; original: string }[];
+  images: GalleryItem[];
   name: string;
 }
 
-export default function ImageGallery({ gallery, name }: ImageGalleryProps) {
-  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
+/** Large photo with a row of thumbnails underneath; a thumbnail swaps the large photo. */
+export function ImageGallery({ images, name }: ImageGalleryProps) {
+  const [active, setActive] = useState(0);
+  const sorted = [...images].sort((a, b) => a.order - b.order);
 
-  if (!gallery || gallery.length === 0) return null;
-
-  // Вимикаємо loop, якщо картинок менше або дорівнює 1, щоб уникнути попереджень Swiper
-  const isLoopEnabled = gallery.length > 1;
+  if (sorted.length === 0) return null;
+  const current = sorted[Math.min(active, sorted.length - 1)];
 
   return (
-    <div className={styles.galleryContainer}>
-      {/* Головний слайдер великого зображення */}
-      <Swiper
-        loop={isLoopEnabled}
-        spaceBetween={10}
-        navigation={true}
-        observer={true}
-        observeParents={true}
-        thumbs={{
-          swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
-        }}
-        modules={[FreeMode, Navigation, Thumbs]}
-        className={styles.mainSwiper}
-      >
-        {gallery.map((item, index) => (
-          <SwiperSlide key={index} className={styles.mainSlide}>
-            <div className={styles.mainImageWrapper}>
-              <Image
-                src={item.original}
-                alt={`${name} photo ${index + 1}`}
-                fill
-                priority={index === 0}
-                sizes="(max-width: 1440px) 50vw, 600px"
-                className={styles.image}
-              />
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+    <div className={styles.gallery}>
+      <div className={styles.main}>
+        <Image
+          key={current.id}
+          src={current.original}
+          alt={`${name}, photo ${active + 1} of ${sorted.length}`}
+          fill
+          priority
+          sizes="(max-width: 1023px) 100vw, 638px"
+          className={styles.image}
+        />
+      </div>
 
-      {/* Нижня галерея мініатюр (Thumbs) */}
-      <Swiper
-        onSwiper={setThumbsSwiper}
-        loop={false}
-        spaceBetween={16}
-        slidesPerView={4}
-        freeMode={true}
-        watchSlidesProgress={true}
-        observer={true}
-        observeParents={true}
-        modules={[FreeMode, Navigation, Thumbs]}
-        className={styles.thumbsSwiper}
-      >
-        {gallery.map((item, index) => (
-          <SwiperSlide key={index} className={styles.thumbSlide}>
-            <div className={styles.thumbImageWrapper}>
-              <Image
-                src={item.thumb}
-                alt={`${name} thumbnail ${index + 1}`}
-                fill
-                sizes="120px"
-                className={styles.image}
-              />
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {sorted.length > 1 && (
+        <ul className={styles.thumbs} aria-label="Photos">
+          {sorted.map((item, index) => (
+            <li key={item.id}>
+              <button
+                type="button"
+                className={index === active ? `${styles.thumb} ${styles.active}` : styles.thumb}
+                onClick={() => setActive(index)}
+                aria-label={`Show photo ${index + 1}`}
+                aria-pressed={index === active}
+              >
+                <Image
+                  src={item.thumb}
+                  alt=""
+                  fill
+                  sizes="(max-width: 767px) 25vw, 136px"
+                  className={styles.image}
+                />
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

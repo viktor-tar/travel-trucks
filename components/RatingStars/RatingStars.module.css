@@ -1,14 +1,12 @@
-.starsWrapper {
-  display: flex;
+.stars {
+  display: inline-flex;
   gap: 4px;
 }
 
-.starFilled {
-  fill: #ffc531;
-  stroke: #ffc531;
+.filled {
+  color: var(--color-rating);
 }
 
-.starEmpty {
-  fill: #dadde1;
-  stroke: #dadde1;
+.empty {
+  color: var(--color-gray-light);
 }

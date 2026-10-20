@@ -1,73 +1,49 @@
-/* components/CamperList/EmptyState.module.css */
-.emptyContainer {
-  flex-grow: 1;
-  background-color: var(--color-bg-light);
-  border-radius: var(--radius-20);
-  padding: 60px 40px;
+.card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 24px;
+  padding: 0 24px 64px;
+  border-radius: 16px;
+  background-color: var(--color-inputs);
   text-align: center;
-  min-height: 500px;
 }
 
-.illustrationWrapper {
-  width: 240px;
-  height: 140px;
-  margin-bottom: var(--spacing-24);
-}
-
-.illustration {
+.image {
   width: 100%;
-  height: 100%;
-}
-
-.title {
-  font-size: var(--font-size-24);
-  font-weight: var(--font-weight-600);
-  color: var(--color-main);
-  margin-bottom: var(--spacing-12);
+  max-width: 488px;
+  height: auto;
 }
 
 .text {
-  font-size: var(--font-size-14);
-  color: var(--color-slate);
-  line-height: var(--line-height-20);
-  margin-bottom: var(--spacing-32);
-  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 600px;
+  font-weight: 500;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.33;
 }
 
 .actions {
   display: flex;
-  gap: var(--spacing-16);
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 19px;
 }
 
-.clearBtn {
-  height: 48px;
-  padding: 0 24px;
-  background-color: var(--color-bg-white);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-200);
-  font-size: var(--font-size-14);
-  font-weight: var(--font-weight-500);
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-6);
-  color: var(--color-main);
-}
+@media (max-width: 767px) {
+  .card {
+    padding-bottom: 32px;
+  }
 
-.viewAllBtn {
-  height: 48px;
-  padding: 0 24px;
-  background-color: var(--color-button);
-  color: var(--color-bg-white);
-  border-radius: var(--radius-200);
-  font-size: var(--font-size-14);
-  font-weight: var(--font-weight-500);
-  transition: background-color 0.2s ease;
-}
-
-.viewAllBtn:hover {
-  background-color: var(--color-button-hover);
+  .actions {
+    flex-direction: column;
+    align-self: stretch;
+  }
 }

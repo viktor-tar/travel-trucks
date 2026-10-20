@@ -1,3 +1,5 @@
+import { Loader } from "@/components/Loader/Loader";
+
 export default function Loading() {
-  return <div className="p-12 text-center text-gray-500">Loading...</div>;
+  return <Loader title="Loading..." text="Please wait a moment" />;
 }

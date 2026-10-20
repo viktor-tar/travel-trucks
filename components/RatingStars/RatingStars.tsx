@@ -1,22 +1,19 @@
-import { Icon } from "../Icon/Icon";
+import { Icon } from "@/components/Icon/Icon";
 import styles from "./RatingStars.module.css";
 
-interface RatingStarsProps {
-  rating: number;
-}
+export function RatingStars({ rating }: { rating: number }) {
+  const rounded = Math.round(rating);
 
-export default function RatingStars({ rating }: RatingStarsProps) {
   return (
-    <div className={styles.starsWrapper}>
+    <span className={styles.stars} role="img" aria-label={`Rated ${rating} out of 5`}>
       {[1, 2, 3, 4, 5].map((star) => (
         <Icon
           key={star}
-          id={star <= rating ? "star-filled" : "star-empty"}
-          width={16}
-          height={16}
-          className={star <= rating ? styles.starFilled : styles.starEmpty}
+          id="star"
+          size={16}
+          className={star <= rounded ? styles.filled : styles.empty}
         />
       ))}
-    </div>
+    </span>
   );
 }

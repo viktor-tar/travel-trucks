@@ -1,0 +1,16 @@
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  line-height: 1.5;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.star {
+  color: var(--color-rating);
+}

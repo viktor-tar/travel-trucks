@@ -1,101 +1,115 @@
 @import "modern-normalize/modern-normalize.css";
 
 :root {
-  --container-max-width: 1440px;
-
-  /* UI Kit Palette */
-  --color-sage-dark: #6d7b75;
-  --color-sage-light: #829b91;
-  --color-badge: #f2f4f7;
-  --color-bg-light: #f7f7f7;
+  /* Colours from the design's UI kit */
+  --color-main: #101828;
+  --color-text: #475467;
+  --color-gray: #6c717b;
+  --color-gray-light: #dadde1;
+  --color-badges: #f2f4f7;
+  --color-inputs: #f7f7f7;
+  --color-white: #ffffff;
+  --color-button: #829b91;
+  --color-button-hover: #6d7b75;
   --color-rating: #ffc531;
-  --color-muted: #6c717b;
-  --color-bg-white: #ffffff;
-  --color-slate: #475467;
-  --color-dark-blue: #10162b;
-  --color-border-light: #dadde1;
+  --color-error: #e44848;
+  --color-error-strong: #ec383b;
+  --color-error-bg: #ffdfdf;
 
-  /* Semantic Variables mapped to UI Kit */
-  --color-main: var(--color-dark-blue);
-  --color-secondary: var(--color-slate);
-  --color-gray: var(--color-muted);
-  --color-border: var(--color-border-light);
+  --font-main: "Inter", system-ui, sans-serif;
+  --font-accent: "Manrope", system-ui, sans-serif;
 
-  /* Buttons */
-  --color-button: var(--color-sage-dark);
-  --color-button-hover: var(--color-sage-light);
-
-  /* Validation / Errors */
-  --color-error: #d84343;
-  --color-error-bg: #fff5f5;
-
-  /* Typography */
-  --font-inter: "Inter", sans-serif;
-  --font-manrope: "Manrope", sans-serif;
-
-  --font-size-12: 12px;
-  --font-size-14: 14px;
-  --font-size-16: 16px;
-  --font-size-18: 18px;
-  --font-size-20: 20px;
-  --font-size-24: 24px;
-  --font-size-48: 48px;
-
-  --font-weight-400: 400;
-  --font-weight-500: 500;
-  --font-weight-600: 600;
-
-  --line-height-16: 16px;
-  --line-height-20: 20px;
-  --line-height-24: 24px;
-  --line-height-32: 32px;
-
-  /* Spacing & Radii */
-  --radius-8: 8px;
-  --radius-10: 10px;
-  --radius-12: 12px;
-  --radius-16: 16px;
-  --radius-20: 20px;
-  --radius-200: 200px;
-
-  /* Figma Spacing Variables */
-  --spacing-4: 4px;
-  --spacing-6: 6px;
-  --spacing-8: 8px;
-  --spacing-10: 10px;
-  --spacing-12: 12px;
-  --spacing-14: 14px;
-  --spacing-16: 16px;
-  --spacing-24: 24px;
-  --spacing-32: 32px;
-  --spacing-40: 40px;
-  --spacing-48: 48px;
-  --spacing-52: 52px;
-  --spacing-65: 65px;
-  --spacing-80: 80px;
+  --header-height: 72px;
+  --container-padding: 64px;
+  --transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-* {
-  box-sizing: border-box;
+@media (max-width: 1023px) {
+  :root {
+    --container-padding: 32px;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --container-padding: 16px;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-main);
+  background-color: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd,
+fieldset,
+figure {
   margin: 0;
   padding: 0;
 }
 
-body {
-  font-family: var(--font-inter);
-  color: var(--color-main);
-  background-color: var(--color-bg-white);
-  -webkit-font-smoothing: antialiased;
+ul,
+ol {
+  list-style: none;
+}
+
+fieldset {
+  border: none;
+  min-width: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
 }
 
 a {
-  text-decoration: none;
   color: inherit;
+  text-decoration: none;
 }
 
 button {
+  font: inherit;
+  color: inherit;
   cursor: pointer;
-  border: none;
-  background: none;
-  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-button-hover);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

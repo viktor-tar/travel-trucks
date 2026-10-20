@@ -1,21 +1,21 @@
 "use client";
 
-import styles from "./error.module.css";
+import { Button } from "@/components/Button/Button";
+import { StatusMessage } from "@/components/StatusMessage/StatusMessage";
 
 export default function Error({
-  error,
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>Something went wrong!</h2>
-      <p className={styles.message}>{error.message}</p>
-      <button onClick={() => reset()} className={styles.button}>
-        Try again
-      </button>
-    </div>
+    <StatusMessage
+      heading="h1"
+      title="Something went wrong"
+      text="We couldn't load this page. Please check your connection and try again."
+    >
+      <Button onClick={reset}>Try again</Button>
+    </StatusMessage>
   );
 }

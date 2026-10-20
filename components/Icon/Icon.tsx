@@ -1,21 +1,14 @@
-import React from "react";
-
 interface IconProps {
   id: string;
-  width?: number;
-  height?: number;
+  size?: number;
   className?: string;
 }
 
-export const Icon: React.FC<IconProps> = ({
-  id,
-  width = 20,
-  height = 20,
-  className,
-}) => {
+/** An icon from the SVG sprite. Icons are decorative; their meaning is always in text nearby. */
+export function Icon({ id, size = 20, className }: IconProps) {
   return (
-    <svg width={width} height={height} className={className}>
+    <svg width={size} height={size} className={className} aria-hidden="true" focusable="false">
       <use href={`/sprite.svg#${id}`} />
     </svg>
   );
-};
+}

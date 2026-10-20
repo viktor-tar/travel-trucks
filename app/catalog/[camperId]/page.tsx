@@ -1,142 +1,123 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Container } from "@/components/Container/Container";
-import { Icon } from "@/components/Icon/Icon";
-import ImageGallery from "@/components/ImageGallery/ImageGallery";
-import ReviewsList from "@/components/ReviewsList/ReviewsList";
+import { cache } from "react";
+import { isAxiosError } from "axios";
+import { BadgeList } from "@/components/Badge/Badge";
 import { BookingForm } from "@/components/BookingForm/BookingForm";
-import { fetchCamperById, fetchCamperReviews } from "@/lib/api/clientApi";
-import { Review } from "@/types/camper";
+import { CamperMeta } from "@/components/CamperMeta/CamperMeta";
+import { Container } from "@/components/Container/Container";
+import { ImageGallery } from "@/components/ImageGallery/ImageGallery";
+import { ReviewsList } from "@/components/ReviewsList/ReviewsList";
+import { fetchCamperById, fetchCamperReviews } from "@/lib/api/campers";
+import { detailBadges, FORM_LABELS, formatMeasure, formatPrice } from "@/lib/camper";
 import styles from "./CamperDetails.module.css";
 
 interface PageProps {
-  params: Promise<{
-    camperId: string;
-  }>;
+  params: Promise<{ camperId: string }>;
 }
 
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
+/** One request per page render, shared by the metadata and the page. */
+const getCamper = cache(async (id: string) => {
   try {
-    const { camperId } = await params;
-    const camper = await fetchCamperById(camperId);
-    return {
-      title: `TravelTrucks — ${camper.name}`,
-      description: camper.description
-        ? camper.description.slice(0, 150)
-        : "Camper details",
-    };
-  } catch {
-    return {
-      title: "TravelTrucks — Camper Details",
-    };
+    return await fetchCamperById(id);
+  } catch (error) {
+    if (isAxiosError(error) && (error.response?.status === 404 || error.response?.status === 400)) {
+      notFound();
+    }
+    throw error;
   }
+});
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { camperId } = await params;
+  const camper = await getCamper(camperId);
+  const description =
+    camper.description.length > 155
+      ? `${camper.description.slice(0, 154).trimEnd()}…`
+      : camper.description;
+
+  return {
+    title: camper.name,
+    description,
+    alternates: { canonical: `/catalog/${camper.id}` },
+    openGraph: {
+      title: `${camper.name} | TravelTrucks`,
+      description,
+      url: `/catalog/${camper.id}`,
+      images: [{ url: camper.coverImage, alt: camper.name }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${camper.name} | TravelTrucks`,
+      description,
+      images: [camper.coverImage],
+    },
+  };
 }
 
 export default async function CamperDetailsPage({ params }: PageProps) {
   const { camperId } = await params;
+  const [camper, reviews] = await Promise.all([
+    getCamper(camperId),
+    fetchCamperReviews(camperId).catch(() => []),
+  ]);
 
-  let camper;
-  let reviews: Review[] = [];
-
-  try {
-    const [camperData, reviewsData] = await Promise.all([
-      fetchCamperById(camperId),
-      fetchCamperReviews(camperId).catch(() => []),
-    ]);
-    camper = camperData;
-    reviews = reviewsData.length > 0 ? reviewsData : camperData.reviews || [];
-  } catch {
-    notFound();
-  }
-
-  const amenitiesList: string[] = Array.isArray(camper.amenities)
-    ? camper.amenities
-    : typeof camper.amenities === "string"
-      ? [camper.amenities]
-      : [];
+  const specs = [
+    { label: "Form", value: FORM_LABELS[camper.form] },
+    { label: "Length", value: formatMeasure(camper.length) },
+    { label: "Width", value: formatMeasure(camper.width) },
+    { label: "Height", value: formatMeasure(camper.height) },
+    { label: "Tank", value: formatMeasure(camper.tank) },
+    { label: "Consumption", value: formatMeasure(camper.consumption) },
+  ];
 
   return (
-    <section className={styles.section}>
-      <Container>
-        {/* Верхній ряд: Галерея (зліва) та Інформація/Характеристики (справа) */}
-        <div className={styles.topGrid}>
-          <div className={styles.leftColumn}>
-            <ImageGallery gallery={camper.gallery || []} name={camper.name} />
-          </div>
+    <Container className={styles.page}>
+      <div className={styles.top}>
+        <ImageGallery images={camper.gallery ?? []} name={camper.name} />
 
-          <div className={styles.rightColumn}>
-            <div className={styles.infoCard}>
-              <h1 className={styles.title}>{camper.name}</h1>
-              <div className={styles.meta}>
-                <div className={styles.rating}>
-                  <Icon id="star-filled" width={16} height={16} />
-                  <span>
-                    {camper.rating} ({reviews.length} Reviews)
-                  </span>
-                </div>
-                <div className={styles.location}>
-                  <Icon id="map" width={16} height={16} />
-                  <span>{camper.location}</span>
-                </div>
-              </div>
-              <div className={styles.price}>€{camper.price}</div>
-              <p className={styles.description}>{camper.description}</p>
+        <div className={styles.info}>
+          <section className={styles.card} aria-labelledby="camper-name">
+            <div className={styles.summary}>
+              <h1 id="camper-name" className={styles.title}>
+                {camper.name}
+              </h1>
+              <CamperMeta
+                rating={camper.rating}
+                totalReviews={camper.totalReviews}
+                location={camper.location}
+              />
+              <p className={styles.price}>{formatPrice(camper.price)}</p>
             </div>
+            <p className={styles.description}>{camper.description}</p>
+          </section>
 
-            <div className={styles.specsCard}>
-              <h2 className={styles.specsTitle}>Vehicle details</h2>
-              <ul className={styles.badges}>
-                <li className={styles.badge}>{camper.transmission}</li>
-                <li className={styles.badge}>{camper.engine}</li>
-                {amenitiesList.map((amenity) => (
-                  <li key={amenity} className={styles.badge}>
-                    {amenity}
-                  </li>
-                ))}
-              </ul>
-
-              <div className={styles.specsList}>
-                <div className={styles.specItem}>
-                  <span>Form</span>
-                  <span>{camper.form}</span>
+          <section className={`${styles.card} ${styles.details}`} aria-labelledby="vehicle-details">
+            <h2 id="vehicle-details" className={styles.title}>
+              Vehicle details
+            </h2>
+            <BadgeList badges={detailBadges(camper)} />
+            <dl className={styles.specs}>
+              {specs.map(({ label, value }) => (
+                <div key={label} className={styles.spec}>
+                  <dt>{label}</dt>
+                  <dd>{value}</dd>
                 </div>
-                <div className={styles.specItem}>
-                  <span>Length</span>
-                  <span>{camper.length}</span>
-                </div>
-                <div className={styles.specItem}>
-                  <span>Width</span>
-                  <span>{camper.width}</span>
-                </div>
-                <div className={styles.specItem}>
-                  <span>Height</span>
-                  <span>{camper.height}</span>
-                </div>
-                <div className={styles.specItem}>
-                  <span>Tank</span>
-                  <span>{camper.tank}</span>
-                </div>
-                <div className={styles.specItem}>
-                  <span>Consumption</span>
-                  <span>{camper.consumption}</span>
-                </div>
-              </div>
-            </div>
-          </div>
+              ))}
+            </dl>
+          </section>
         </div>
+      </div>
 
-        {/* Нижній ряд: Відгуки (зліва) та Форма бронювання (справа) */}
+      <section className={styles.bottom} aria-labelledby="reviews">
+        <h2 id="reviews" className={styles.title}>
+          Reviews
+        </h2>
         <div className={styles.bottomGrid}>
-          <div className={styles.reviewsColumn}>
-            <ReviewsList reviews={reviews} />
-          </div>
-          <div className={styles.formColumn}>
-            <BookingForm camperId={camperId} />
-          </div>
+          <ReviewsList reviews={reviews} />
+          <BookingForm camperId={camper.id} camperName={camper.name} />
         </div>
-      </Container>
-    </section>
+      </section>
+    </Container>
   );
 }

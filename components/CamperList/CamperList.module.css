@@ -1,34 +1,34 @@
-.listContainer {
-  flex-grow: 1;
+.wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 40px;
 }
 
-.cardsWrapper {
+.list {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-32);
+  gap: 32px;
   width: 100%;
-  margin-bottom: var(--spacing-40);
 }
 
-.loadMoreBtn {
-  padding: 16px 32px;
-  background-color: transparent;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-200);
-  font-size: var(--font-size-16);
-  font-weight: var(--font-weight-500);
-  color: var(--color-main);
-  transition: border-color 0.2s ease;
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-gray-light);
+  border-top-color: var(--color-button-hover);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
-.loadMoreBtn:hover {
-  border-color: var(--color-button);
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.loadMoreBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+@media (max-width: 767px) {
+  .list {
+    gap: 24px;
+  }
 }

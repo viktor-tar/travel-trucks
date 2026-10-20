@@ -1,0 +1,12 @@
+.logo {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.travel {
+  fill: var(--color-main);
+}
+
+.trucks {
+  fill: var(--color-text);
+}

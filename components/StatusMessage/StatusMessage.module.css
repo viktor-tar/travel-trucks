@@ -1,0 +1,35 @@
+.wrapper {
+  padding-block: 48px 80px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 640px;
+  margin-inline: auto;
+  padding: 48px 24px;
+  border-radius: 16px;
+  background-color: var(--color-inputs);
+  text-align: center;
+}
+
+.eyebrow {
+  font-size: 64px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-button);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.33;
+}
+
+.text {
+  max-width: 420px;
+  margin-bottom: 8px;
+  color: var(--color-text);
+}

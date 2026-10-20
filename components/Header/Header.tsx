@@ -2,31 +2,37 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Container } from "../Container/Container";
+import { Container } from "@/components/Container/Container";
+import { Logo } from "@/components/Logo/Logo";
 import styles from "./Header.module.css";
 
-export default function Header() {
+const LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/catalog", label: "Catalog" },
+];
+
+export function Header() {
   const pathname = usePathname();
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
     <header className={styles.header}>
-      <Container className={styles.container}>
-        <Link href="/" className={styles.logo}>
-          TravelTrucks
-        </Link>
-        <nav className={styles.nav}>
-          <Link
-            href="/"
-            className={`${styles.link} ${pathname === "/" ? styles.active : ""}`}
-          >
-            Home
-          </Link>
-          <Link
-            href="/catalog"
-            className={`${styles.link} ${pathname.startsWith("/catalog") ? styles.active : ""}`}
-          >
-            Catalog
-          </Link>
+      <Container className={styles.inner}>
+        <Logo />
+        <nav aria-label="Main">
+          <ul className={styles.menu}>
+            {LINKS.map(({ href, label }) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className={isActive(href) ? `${styles.link} ${styles.active}` : styles.link}
+                  aria-current={isActive(href) ? "page" : undefined}
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </nav>
       </Container>
     </header>

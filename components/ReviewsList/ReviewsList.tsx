@@ -1,31 +1,30 @@
-import { Review } from "@/types/camper";
-import RatingStars from "../RatingStars/RatingStars";
+import { RatingStars } from "@/components/RatingStars/RatingStars";
+import type { Review } from "@/types/camper";
 import styles from "./ReviewsList.module.css";
 
-interface ReviewsListProps {
-  reviews: Review[];
-}
+export function ReviewsList({ reviews }: { reviews: Review[] }) {
+  if (reviews.length === 0) {
+    return <p className={styles.empty}>No reviews yet. Be the first to travel in this camper!</p>;
+  }
 
-export default function ReviewsList({ reviews }: ReviewsListProps) {
   return (
-    <div className={styles.container}>
-      <h3 className={styles.heading}>Reviews</h3>
-      <div className={styles.list}>
-        {reviews.map((rev, idx) => (
-          <div key={idx} className={styles.reviewCard}>
-            <div className={styles.userHeader}>
-              <div className={styles.avatar}>
-                {rev.reviewer_name.charAt(0).toUpperCase()}
-              </div>
-              <div>
-                <h4 className={styles.userName}>{rev.reviewer_name}</h4>
-                <RatingStars rating={rev.reviewer_rating} />
+    <ul className={styles.list}>
+      {reviews.map((review) => (
+        <li key={review.id}>
+          <article className={styles.review}>
+            <div className={styles.person}>
+              <span className={styles.avatar} aria-hidden="true">
+                {review.reviewer_name.charAt(0).toUpperCase()}
+              </span>
+              <div className={styles.nameBlock}>
+                <h3 className={styles.name}>{review.reviewer_name}</h3>
+                <RatingStars rating={review.reviewer_rating} />
               </div>
             </div>
-            <p className={styles.comment}>{rev.comment}</p>
-          </div>
-        ))}
-      </div>
-    </div>
+            <p className={styles.comment}>{review.comment}</p>
+          </article>
+        </li>
+      ))}
+    </ul>
   );
 }

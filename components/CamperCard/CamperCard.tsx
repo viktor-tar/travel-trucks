@@ -1,160 +1,56 @@
 import Image from "next/image";
-import Link from "next/link";
-import { Camper } from "@/types/camper";
-import { Icon } from "../Icon/Icon";
+import { BadgeList } from "@/components/Badge/Badge";
+import { Button } from "@/components/Button/Button";
+import { CamperMeta } from "@/components/CamperMeta/CamperMeta";
+import { cardBadges, formatPrice } from "@/lib/camper";
+import type { Camper } from "@/types/camper";
 import styles from "./CamperCard.module.css";
 
 interface CamperCardProps {
   camper: Camper;
+  /** The first cards are visible straight away, so their photos load first. */
+  priority?: boolean;
 }
 
-interface BadgeItem {
-  id: string;
-  label: string;
-  iconId: string;
-}
-
-const FORM_LABELS: Record<string, string> = {
-  panelVan: "Panel Van",
-  fullyIntegrated: "Fully Integrated",
-  alcove: "Alcove",
-  panel_van: "Panel Van",
-  integrated: "Fully Integrated",
-};
-
-const AMENITIES_MAP: Record<string, { label: string; iconId: string }> = {
-  kitchen: { label: "Kitchen", iconId: "kitchen" },
-  ac: { label: "AC", iconId: "AC" },
-  bathroom: { label: "Bathroom", iconId: "bathroom" },
-  tv: { label: "TV", iconId: "TV" },
-  radio: { label: "Radio", iconId: "radio" },
-  refrigerator: { label: "Refrigerator", iconId: "refrigerator" },
-  microwave: { label: "Microwave", iconId: "microwave" },
-  gas: { label: "Gas", iconId: "gas" },
-  water: { label: "Water", iconId: "water" },
-};
-
-export default function CamperCard({ camper }: CamperCardProps) {
-  const formattedPrice = `€${Math.floor(camper.price).toLocaleString("en-US")}`;
-
-  const imageSrc =
-    camper.coverImage ||
-    camper.gallery?.[0]?.thumb ||
-    camper.gallery?.[0]?.original ||
-    "/images/Hero.png";
-
-  const getBadges = (): BadgeItem[] => {
-    const list: BadgeItem[] = [];
-
-    if (camper.transmission) {
-      list.push({
-        id: "transmission",
-        label:
-          camper.transmission.charAt(0).toUpperCase() +
-          camper.transmission.slice(1),
-        iconId: "transmission",
-      });
-    }
-
-    if (camper.engine) {
-      list.push({
-        id: "engine",
-        label: camper.engine.charAt(0).toUpperCase() + camper.engine.slice(1),
-        iconId: "engine",
-      });
-    }
-
-    if (camper.form) {
-      // Явно вказуємо string для iconId, щоб TS не обмежував його типом CamperForm
-      let iconId: string = camper.form;
-      if (camper.form === "panel_van") iconId = "panelVan";
-      if (camper.form === "integrated") iconId = "fullyIntegrated";
-
-      list.push({
-        id: "form",
-        label: FORM_LABELS[camper.form] || camper.form,
-        iconId: iconId,
-      });
-    }
-
-    Object.keys(AMENITIES_MAP).forEach((key) => {
-      let isPresent = false;
-
-      if (Array.isArray(camper.amenities)) {
-        isPresent = camper.amenities.includes(key);
-      } else if (typeof camper.amenities === "string") {
-        isPresent = (camper.amenities as string).includes(key);
-      } else {
-        isPresent = Boolean(camper[key as keyof Camper]);
-      }
-
-      if (isPresent) {
-        list.push({
-          id: key,
-          label: AMENITIES_MAP[key].label,
-          iconId: AMENITIES_MAP[key].iconId,
-        });
-      }
-    });
-
-    return list;
-  };
-
-  const badges = getBadges();
-
+export function CamperCard({ camper, priority = false }: CamperCardProps) {
   return (
     <article className={styles.card}>
-      <div className={styles.imageWrapper}>
-        <Image
-          src={imageSrc}
-          alt={camper.name}
-          width={292}
-          height={320}
-          className={styles.image}
-        />
-      </div>
+      <Image
+        src={camper.coverImage}
+        alt={camper.name}
+        width={219}
+        height={240}
+        sizes="(max-width: 767px) 100vw, 219px"
+        priority={priority}
+        className={styles.image}
+      />
 
-      <div className={styles.content}>
+      <div className={styles.info}>
         <div className={styles.header}>
-          <h2 className={styles.title}>{camper.name}</h2>
-          <div className={styles.priceWrapper}>
-            <span className={styles.price}>{formattedPrice}</span>
+          <div className={styles.titleRow}>
+            <h2 className={styles.title}>{camper.name}</h2>
+            <p className={styles.price}>{formatPrice(camper.price)}</p>
           </div>
-        </div>
-
-        <div className={styles.meta}>
-          <div className={styles.rating}>
-            <Icon id="star-filled" width={16} height={16} />
-            <span>
-              {camper.rating} (
-              {camper.totalReviews ?? camper.reviews?.length ?? 0} Reviews)
-            </span>
-          </div>
-          <div className={styles.location}>
-            <Icon id="map" width={16} height={16} />
-            <span>{camper.location}</span>
-          </div>
+          <CamperMeta
+            rating={camper.rating}
+            totalReviews={camper.totalReviews}
+            location={camper.location}
+          />
         </div>
 
         <p className={styles.description}>{camper.description}</p>
 
-        <ul className={styles.badges}>
-          {badges.map((badge) => (
-            <li key={badge.id} className={styles.badge}>
-              <Icon id={badge.iconId} width={20} height={20} />
-              <span className={styles.badgeText}>{badge.label}</span>
-            </li>
-          ))}
-        </ul>
+        <BadgeList badges={cardBadges(camper)} />
 
-        <Link
+        <Button
           href={`/catalog/${camper.id}`}
           target="_blank"
           rel="noopener noreferrer"
-          className={styles.showMoreBtn}
+          className={styles.button}
         >
           Show more
-        </Link>
+          <span className="visually-hidden">about {camper.name} (opens in a new tab)</span>
+        </Button>
       </div>
     </article>
   );

@@ -1,117 +1,68 @@
 "use client";
 
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import { Form, Formik, type FormikHelpers } from "formik";
 import toast from "react-hot-toast";
-import { sendBookingRequest } from "@/lib/api/clientApi";
+import * as Yup from "yup";
+import { Button } from "@/components/Button/Button";
+import { TextField } from "@/components/TextField/TextField";
+import { sendBookingRequest } from "@/lib/api/campers";
+import type { BookingRequest } from "@/types/camper";
 import styles from "./BookingForm.module.css";
 
-const BookingSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
+const schema = Yup.object({
+  name: Yup.string().trim().min(2, "Name is too short.").required("Please enter your name."),
+  email: Yup.string()
+    .trim()
+    .email("Please enter a valid email, e.g. john@example.com.")
+    .required("Please enter your email."),
 });
+
+const initialValues: BookingRequest = { name: "", email: "" };
 
 interface BookingFormProps {
   camperId: string;
+  camperName: string;
 }
 
-interface BookingFormValues {
-  name: string;
-  email: string;
-}
-
-export function BookingForm({ camperId }: BookingFormProps) {
-  const initialValues: BookingFormValues = {
-    name: "",
-    email: "",
+export function BookingForm({ camperId, camperName }: BookingFormProps) {
+  const handleSubmit = async (
+    values: BookingRequest,
+    { resetForm }: FormikHelpers<BookingRequest>,
+  ) => {
+    try {
+      await sendBookingRequest(camperId, {
+        name: values.name.trim(),
+        email: values.email.trim(),
+      });
+      toast.success(`Thanks, ${values.name.trim()}! Your request for ${camperName} has been sent.`);
+      resetForm();
+    } catch {
+      toast.error("We couldn't send your request. Please try again.");
+    }
   };
 
   return (
-    <div className={styles.formCard}>
-      <h3 className={styles.formTitle}>Book your campervan now</h3>
-      <p className={styles.formSubtitle}>
-        Stay connected, we are always ready to help you.
-      </p>
+    <section className={styles.card} aria-labelledby="booking-title">
+      <div className={styles.heading}>
+        <h2 id="booking-title" className={styles.title}>
+          Book your campervan now
+        </h2>
+        <p className={styles.subtitle}>Stay connected! We are always ready to help you.</p>
+      </div>
 
-      <Formik
-        initialValues={initialValues}
-        validationSchema={BookingSchema}
-        onSubmit={async (values, { resetForm, setSubmitting }) => {
-          try {
-            const response = await sendBookingRequest(camperId, {
-              name: values.name,
-              email: values.email,
-            });
-
-            toast.success(
-              response.message || "Booking request sent successfully!",
-            );
-            resetForm();
-          } catch {
-            toast.error("Failed to send booking request. Please try again.");
-          } finally {
-            setSubmitting(false);
-          }
-        }}
-      >
-        {({ errors, touched, isSubmitting }) => (
-          <Form className={styles.form}>
-            <div className={styles.inputField}>
-              <div
-                className={`${styles.inputWrapper} ${
-                  errors.name && touched.name ? styles.inputError : ""
-                }`}
-              >
-                <Field
-                  type="text"
-                  name="name"
-                  placeholder="Name*"
-                  className={styles.input}
-                />
-                {errors.name && touched.name && (
-                  <span className={styles.errorIcon}>!</span>
-                )}
-              </div>
-              <ErrorMessage
-                name="name"
-                component="span"
-                className={styles.errorMessage}
-              />
+      <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit}>
+        {({ isSubmitting }) => (
+          <Form className={styles.form} noValidate>
+            <div className={styles.fields}>
+              <TextField name="name" label="Name*" autoComplete="name" />
+              <TextField name="email" label="Email*" type="email" autoComplete="email" />
             </div>
-
-            <div className={styles.inputField}>
-              <div
-                className={`${styles.inputWrapper} ${
-                  errors.email && touched.email ? styles.inputError : ""
-                }`}
-              >
-                <Field
-                  type="email"
-                  name="email"
-                  placeholder="Email*"
-                  className={styles.input}
-                />
-                {errors.email && touched.email && (
-                  <span className={styles.errorIcon}>!</span>
-                )}
-              </div>
-              <ErrorMessage
-                name="email"
-                component="span"
-                className={styles.errorMessage}
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={styles.submitBtn}
-            >
+            <Button type="submit" block disabled={isSubmitting} aria-busy={isSubmitting}>
               {isSubmitting ? "Sending..." : "Send"}
-            </button>
+            </Button>
           </Form>
         )}
       </Formik>
-    </div>
+    </section>
   );
 }

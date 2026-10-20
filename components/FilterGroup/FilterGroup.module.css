@@ -1,0 +1,56 @@
+.group {
+  display: flex;
+  flex-direction: column;
+}
+
+.legend {
+  margin-bottom: 8px;
+  padding: 0;
+  color: var(--color-gray);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  cursor: pointer;
+}
+
+.radio {
+  appearance: none;
+  display: grid;
+  place-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  border: 1px solid var(--color-text);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color var(--transition);
+}
+
+.radio::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--color-text);
+  transform: scale(0);
+  transition: transform var(--transition);
+}
+
+.radio:checked::before {
+  transform: scale(1);
+}
+
+.option:hover .radio {
+  border-color: var(--color-button-hover);
+}

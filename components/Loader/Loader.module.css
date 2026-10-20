@@ -1,0 +1,68 @@
+.overlay {
+  position: fixed;
+  inset: var(--header-height) 0 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgb(223 223 223 / 0.44);
+  animation: fade-in 200ms ease both;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 543px;
+  padding: 48px 96px;
+  border-radius: 16px;
+  background-color: var(--color-white);
+  text-align: center;
+}
+
+.spinner {
+  margin-bottom: 32px;
+  animation: spin 1s linear infinite;
+}
+
+.track {
+  fill: none;
+  stroke: var(--color-inputs);
+  stroke-width: 6.4;
+}
+
+.arc {
+  fill: var(--color-button-hover);
+}
+
+.title {
+  margin-bottom: 16px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.33;
+}
+
+.text {
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .card {
+    padding: 40px 24px;
+  }
+}

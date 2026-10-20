@@ -1,26 +1,23 @@
-export type CamperForm =
-  "alcove" | "panel_van" | "integrated" | "semi_integrated";
+export type CamperForm = "alcove" | "panel_van" | "integrated" | "semi_integrated";
 export type Transmission = "automatic" | "manual";
 export type Engine = "diesel" | "petrol" | "hybrid" | "electric";
+export type Amenity =
+  "ac" | "bathroom" | "kitchen" | "tv" | "radio" | "refrigerator" | "microwave" | "gas" | "water";
 
 export interface GalleryItem {
-  id?: string;
-  camperId?: string;
+  id: string;
   thumb: string;
   original: string;
-  order?: number;
+  order: number;
 }
 
-export interface Reviewer {
-  id?: string;
-  camperId?: string;
+export interface Review {
+  id: string;
   reviewer_name: string;
   reviewer_rating: number;
   comment: string;
-  createdAt?: string;
+  createdAt: string;
 }
-
-export type Review = Reviewer;
 
 export interface Camper {
   id: string;
@@ -37,38 +34,21 @@ export interface Camper {
   consumption: string;
   transmission: Transmission;
   engine: Engine;
-  AC?: boolean;
-  bathroom?: boolean;
-  kitchen?: boolean;
-  TV?: boolean;
-  radio?: boolean;
-  refrigerator?: boolean;
-  microwave?: boolean;
-  gas?: boolean;
-  water?: boolean;
-  gallery: GalleryItem[];
-  reviews?: Reviewer[];
-  coverImage?: string;
-  totalReviews?: number;
-  amenities?: string[] | string;
+  amenities: Amenity[];
+  coverImage: string;
+  totalReviews: number;
+  /** Only returned by the single-camper endpoint. */
+  gallery?: GalleryItem[];
 }
 
 export interface CamperFilters {
-  location?: string;
+  location: string;
   form?: CamperForm;
   engine?: Engine;
   transmission?: Transmission;
 }
 
-export type FilterParams = CamperFilters;
-
-export interface FetchCampersParams {
-  page?: number;
-  perPage?: number;
-  filters?: CamperFilters;
-}
-
-export interface FetchCampersResponse {
+export interface CampersResponse {
   page: number;
   perPage: number;
   total: number;
@@ -76,7 +56,7 @@ export interface FetchCampersResponse {
   campers: Camper[];
 }
 
-export interface BookingData {
+export interface BookingRequest {
   name: string;
   email: string;
 }

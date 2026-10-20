@@ -1,32 +1,27 @@
 import { create } from "zustand";
-import { FilterParams, CamperForm, Engine, Transmission } from "@/types/camper";
+import type { CamperFilters } from "@/types/camper";
 
-export interface FilterState {
-  filters: FilterParams;
-  setFilters: (filters: FilterParams) => void;
-  setLocation: (location: string) => void;
-  setForm: (form?: CamperForm) => void;
-  setEngine: (engine?: Engine) => void;
-  setTransmission: (transmission?: Transmission) => void;
-  resetFilters: () => void;
-}
-
-const initialFilters: FilterParams = {
+export const EMPTY_FILTERS: CamperFilters = {
   location: "",
   form: undefined,
   engine: undefined,
   transmission: undefined,
 };
 
+interface FilterState {
+  /** What the sidebar shows while the user is choosing. */
+  draft: CamperFilters;
+  /** What the catalog is filtered by (after "Search"). */
+  applied: CamperFilters;
+  setDraft: (patch: Partial<CamperFilters>) => void;
+  apply: () => void;
+  reset: () => void;
+}
+
 export const useFilterStore = create<FilterState>((set) => ({
-  filters: initialFilters,
-  setFilters: (newFilters) => set({ filters: newFilters }),
-  setLocation: (location) =>
-    set((state) => ({ filters: { ...state.filters, location } })),
-  setForm: (form) => set((state) => ({ filters: { ...state.filters, form } })),
-  setEngine: (engine) =>
-    set((state) => ({ filters: { ...state.filters, engine } })),
-  setTransmission: (transmission) =>
-    set((state) => ({ filters: { ...state.filters, transmission } })),
-  resetFilters: () => set({ filters: initialFilters }),
+  draft: EMPTY_FILTERS,
+  applied: EMPTY_FILTERS,
+  setDraft: (patch) => set((state) => ({ draft: { ...state.draft, ...patch } })),
+  apply: () => set((state) => ({ applied: { ...state.draft } })),
+  reset: () => set({ draft: EMPTY_FILTERS, applied: EMPTY_FILTERS }),
 }));
